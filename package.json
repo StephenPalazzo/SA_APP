@@ -12,6 +12,7 @@
   "jest": {
     "preset": "jest-expo"
   },
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@react-navigation/native": "^6.0.2",
