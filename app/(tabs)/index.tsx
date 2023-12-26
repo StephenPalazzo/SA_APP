@@ -21,6 +21,7 @@ export default function TabOneScreen() {
 
   if (data.length != 1) {
     console.log(data)
+    console.log(dates)
     return (
       <View style={styles.container}>
         <View style={styles.container}>
@@ -60,7 +61,7 @@ export default function TabOneScreen() {
           <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         </View>
 
-        {/* <EditScreenInfo path="app/(tabs)/index.tsx" /> */}
+        <EditScreenInfo data={data} dates={dates} path="app/(tabs)/index.tsx" />
       </View>
     );
   }
