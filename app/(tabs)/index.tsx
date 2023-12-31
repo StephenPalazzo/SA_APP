@@ -6,7 +6,8 @@ import { Text, View } from '../../components/Themed';
 
 export default function TabOneScreen() {
   const [data, setData] = useState([{}])
-  const [dates, setDates] = useState([])
+  const [dates, setDates] = useState([''])
+  const [SBC_ADJ_FCF_data, setSBC_ADJ_FCF_data] = useState({})
 
   useEffect(() => {
     fetch("http://localhost:5000/").then(
@@ -17,11 +18,16 @@ export default function TabOneScreen() {
         setDates(Object.keys(data))
       }
     )
+    fetch("http://localhost:5000/SBC_ADJ_FCF").then(
+      res => res.json()
+    ).then(
+      data => {
+        setSBC_ADJ_FCF_data(data)
+      }
+    )
   }, [])
 
-  if (data.length != 1) {
-    console.log(data)
-    console.log(dates)
+  if (data.length != 1 && Object.keys(SBC_ADJ_FCF_data).length !== 0 && dates.length != 1) {
     return (
       <View style={styles.container}>
         <View style={styles.container}>
@@ -54,14 +60,6 @@ export default function TabOneScreen() {
           <Text style={styles.title}>{`Equity: ${data[dates[4]]['Equity']}`}</Text>
           <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         </View>
-
-        <View style={styles.container}>
-          <Text style={styles.title}>Graph</Text>
-          
-          <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        </View>
-
-        <EditScreenInfo data={data} dates={dates} path="app/(tabs)/index.tsx" />
       </View>
     );
   }

@@ -19,21 +19,17 @@ def plot_data(df, item):
     plt.ylabel(item)
     plt.show()
 
-@app.route("/")
+@app.route('/', methods=['GET'])
 def results():
-    stock_fundamentals = pd.read_csv(f'stock_fundamentals.csv')
-    # plot_data(stock_fundamentals, 'SBC_adj_FCF')
-    with open('stock_info.json') as f:
-        stock_data = json.load(f)
+    with open('stock_info.json', 'r') as file:
+        stock_data = json.load(file)
     return stock_data
 
-@app.route("/SBC_ADJ_FCF")
-def results():
-    stock_fundamentals = pd.read_csv(f'stock_fundamentals.csv')
-    # plot_data(stock_fundamentals, 'SBC_adj_FCF')
-    with open('stock_info.json') as f:
-        stock_data = json.load(f)
-    return stock_data
-
+@app.route("/SBC_ADJ_FCF", methods=['GET'])
+def SBC_adj_FCF():
+    with open('stock_info.json', 'r') as file:
+        financial_data = json.load(file)
+    return [{"year": int(year), "SBC_ADJ_FCF": data["SBC_adj_FCF"]} for year, data in financial_data.items() if year.isdigit()]
+    
 if __name__ == "__main__":
     app.run(debug=True)

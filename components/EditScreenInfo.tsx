@@ -1,13 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from "victory-native";
-
-const dataTemp = [
-  { quarter: 1, earnings: 1000 },
-  { quarter: 2, earnings: 5000 },
-  { quarter: 3, earnings: 10250 },
-  { quarter: 4, earnings: 19000 }
-];
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryTooltip } from "victory-native";
 
 export default class App extends React.Component {
   render() {
@@ -15,32 +8,39 @@ export default class App extends React.Component {
     const { dates } = this.props;
 
     return (
-      <VictoryChart
-        theme={VictoryTheme.material}
-        domainPadding={10}
-      >
-        <VictoryAxis
-          tickValues={[1, 2, 3, 4]}
-          tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
-        />
-        <VictoryAxis
-          dependentAxis
-          tickFormat={(x) => (`$${x / 1000}k`)}
-        />
+      <View style={styles.container}>
+        <VictoryChart
+          theme={VictoryTheme.material}
+          domainPadding={100}
+          padding={100}
+          height={700}
+        >
+          <VictoryAxis
+            tickValues={dates.filter(value => !isNaN(Number(value))).map(Number)}
+            tickFormat={dates.filter(value => !isNaN(Number(value))).map(Number)}
+          />
+          <VictoryAxis
+            dependentAxis
+            tickFormat={(x) => (`$${x / 1000000}mil`)}
+          />
 
-        <VictoryBar
-          data={dataTemp}
-          x="quarter"
-          y="earnings"
-        />
-</VictoryChart>
+          <VictoryBar
+            data={data}
+            x="year"
+            y="SBC_ADJ_FCF"
+            style={{ data: { width: 50, fill: "steelblue" } }}
+            labels={({ datum }) => `$${datum.SBC_ADJ_FCF / 1000000}mil`}
+            /* labelComponent={<VictoryTooltip />} */
+          />
+        </VictoryChart>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 5,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f5fcff"
